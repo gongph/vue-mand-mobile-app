@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="field-input" ref="field-input" @click="isKeyBoardShow = true">
+    <div class="field-input" ref="field-input" @click="onclick">
       <input
         v-model="money"
         type="text"
@@ -38,11 +38,15 @@ export default {
   data () {
     return {
       money: '',
-      isKeyBoardShow: false
+      isKeyBoardShow: false,
+      readonly: true
     }
   },
   methods: {
-    onNumberEnter(val) {
+    onclick () {
+      this.isKeyBoardShow = true
+    },
+    onNumberEnter (val) {
       this.money += val
     },
     onNumberDelete () {
