@@ -1,6 +1,9 @@
 # vue-mand-mobile-app
 A project build with vue.js
 
+## 效果图
+[查看效果图](/public/img/preview.jpg)
+
 ## 安装
 ```
 yarn install
