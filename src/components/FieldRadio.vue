@@ -1,23 +1,62 @@
 <template>
   <div class="payway-wrapper">
-    <div class="payway zhifubao">
-      <div class="label">支付宝全额支付</div>
-      <div class="field-radio">
-        <input type="radio" aria-hidden="true" tabindex="-1" class="field-radio__original" value="1">
+    <template v-if="data.length > 0">
+      <div class="payway zhifubao">
+        <div class="label">{{ data[0].label }}</div>
+        <div
+          class="field-radio"
+          :class="index === 1 ? 'is-checked' : ''"
+          @click="onclick(1, data[0])"
+        >
+          <input
+            type="radio"
+            aria-hidden="true"
+            tabindex="-1"
+            class="field-radio__original"
+            :value="data[0].value"
+          >
+        </div>
       </div>
-    </div>
-    <div class="payway beef">
-      <div class="label">蜂蜜+支付宝支付</div>
-      <div class="field-radio">
-        <input type="radio" aria-hidden="true" tabindex="-1" class="field-radio__original" value="2">
+      <div class="payway beef">
+        <div class="label">{{ data[1].label }}</div>
+        <div
+          class="field-radio"
+          :class="index === 2 ? 'is-checked' : ''"
+          @click="onclick(2, data[1])"
+        >
+          <input
+            type="radio"
+            aria-hidden="true"
+            tabindex="-1"
+            class="field-radio__original"
+            :value="data[1].value"
+          >
+        </div>
       </div>
-    </div>
+    </template>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'PayWay'
+  name: 'PayWay',
+  props: {
+    data: {
+      type: Array,
+      default: () => []
+    }
+  },
+  data () {
+    return {
+      index: -1
+    }
+  },
+  methods: {
+    onclick (index, row) {
+      this.index = index
+      this.$emit('click', row, row.value)
+    }
+  }
 }
 </script>
 
@@ -68,7 +107,7 @@ export default {
         transform: rotate(45deg);
         transform-origin: right bottom;
       }
-      &:is-checked {
+      &.is-checked {
         background-color: rgba(254,96,71,1);
       }
     }

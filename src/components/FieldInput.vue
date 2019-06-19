@@ -1,27 +1,28 @@
 <template>
-  <div>
-    <div class="field-input" ref="field-input" @click="onclick">
-      <input
-        v-model="money"
-        type="text"
-        autocomplete="off"
-        placeholder="消费金额"
-        class="field-input__inner"
-        readonly
-        v-focus
-      >
-      <span class="field-input__suffix">
-        <span class="field-input__suffix-inner">
-          <i class="field-input__icon">￥</i>
-        </span>
+  <div class="field-input" ref="field-input">
+    <input
+      v-model.trim="number"
+      type="text"
+      autocomplete="off"
+      placeholder="消费金额"
+      class="field-input__inner"
+      readonly
+      @click="onclick"
+      v-focus
+    >
+    <span class="field-input__suffix">
+      <span class="field-input__suffix-inner">
+        <i class="field-input__icon">￥</i>
       </span>
-    </div>
+    </span>
     <md-number-keyboard
       v-model="isKeyBoardShow"
       ok-text="支付"
       disorder
+      @hide="onNumberHide"
       @enter="onNumberEnter"
       @delete="onNumberDelete"
+      @confirm="onNumberConfirm"
     />
   </div>
 </template>
@@ -29,6 +30,7 @@
 <script>
 import { NumberKeyboard } from 'mand-mobile'
 import FocusMixin from '@/mixins/focus.js'
+
 export default {
   name: 'FieldInput',
   mixins: [FocusMixin],
@@ -37,7 +39,7 @@ export default {
   },
   data () {
     return {
-      money: '',
+      number: '',
       isKeyBoardShow: false,
       readonly: true
     }
@@ -45,13 +47,22 @@ export default {
   methods: {
     onclick () {
       this.isKeyBoardShow = true
+      this.$emit('number:show')
+    },
+    onNumberHide () {
+      this.$emit('number:hide', 'hide')
     },
     onNumberEnter (val) {
-      this.money += val
+      this.number = this.number + val
+      this.$emit('number:enter', val)
     },
     onNumberDelete () {
-      if (!this.money) return
-      this.money = this.money.substr(0, this.money.length - 1)
+      if (!this.number) return
+      this.number = this.number.substr(0, this.number.length - 1)
+      this.$emit('number:delete', this.number)
+    },
+    onNumberConfirm () {
+      this.$emit('number:confirm')
     }
   }
 }
